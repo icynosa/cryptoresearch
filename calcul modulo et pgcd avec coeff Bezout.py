@@ -1,24 +1,30 @@
-def euclide_etendu(a, b):
-    # Cas de base
-    if b == 0:
-        return a, 1, 0
+def pgcd_etendu_iteratif(a, b):
+    # Initialisation des coefficients
+    # u1, v1 pour 'a' et u2, v2 pour 'b'
+    u1, v1 = 1, 0
+    u2, v2 = 0, 1
 
-    # Appel récursif
-    pgcd, u1, v1 = euclide_etendu(b, a % b)
+    while b != 0:
+        q = a // b  # Quotient de la division euclidienne
 
-    # Mise à jour des coefficients selon la formule de Bézout
-    u = v1
-    v = u1 - (a // b) * v1
+        # Mise à jour de a et b (comme dans l'algorithme d'Euclide classique)
+        a, b = b, a % b
 
-    return pgcd, u, v
+        # Mise à jour simultanée des coefficients de Bézout
+        u1, u2 = u2, u1 - q * u2
+        v1, v2 = v2, v1 - q * v2
+
+    # À la fin de la boucle, 'a' contient le PGCD,
+    # et (u1, v1) sont les coefficients de Bézout
+    return a, u1, v1
 
 
-# Demande des valeurs à l'utilisateur
+# Saisie utilisateur
 a = int(input("Entrez la valeur de a : "))
 b = int(input("Entrez la valeur de b : "))
 
-# Calculs
-pgcd, u, v = euclide_etendu(a, b)
+# Calcul
+pgcd, u, v = pgcd_etendu_iteratif(a, b)
 
 # Affichage des résultats
 print(f"PGCD({a}, {b}) = {pgcd}")
